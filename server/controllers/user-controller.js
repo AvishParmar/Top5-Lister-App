@@ -57,21 +57,40 @@ loginUser = async (req, res) => {
     }
 }
 logoutUser = async (req, res) => {
-    try{
-        const { email, password } = req.body;
-        const user = await User.findOne({ email: email });
-        return res.status(200).json({
-            loggedIn: false,
-            user: {
-                email: user.email,
-                password: user.password
-            }
-        }).send();
-    }
-    catch (err) {
-        console.log(err);
-        res.status(500).send();
-    }
+    res.cookie('token', 'none', {
+        expires: new Date(Date.now()),
+        httpOnly: true,
+    })
+    res
+        .status(200)
+        .json({ success: true, message: 'User logged out successfully' })
+    // const { email, password } = req.body;
+    // console.log(email)
+    // const user = await User.findOne({ email: email });
+    // res.cookie('token', 'none', {
+    //     expires: new Date(Date.now()),
+    //     httpOnly: true,
+    // })
+    
+    // return res.status(200).json({
+    //     success: true,
+    //     user: user
+    // }).send();
+    // try{
+    //     const { email, password } = req.body;
+    //     const user = await User.findOne({ email: email });
+    //     return res.status(200).json({
+    //         loggedIn: false,
+    //         user: {
+    //             email: user.email,
+    //             password: user.password
+    //         }
+    //     }).send();
+    // }
+    // catch (err) {
+    //     console.log(err);
+    //     res.status(500).send();
+    // }
 }
 registerUser = async (req, res) => {
     try {

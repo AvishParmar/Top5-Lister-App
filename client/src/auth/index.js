@@ -105,12 +105,10 @@ function AuthContextProvider(props) {
             authReducer({
                 type: AuthActionType.LOGOUT_USER,
                 payload: {
-                    loggedIn: false,
-                    user: null
+                    user: response.data.user
                 }
             })
             history.push("/");
-            store.loadIdNamePairs();
         }
     }
     return (
