@@ -12,6 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 
+
 export default function AppBanner() {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
@@ -26,6 +27,10 @@ export default function AppBanner() {
         setAnchorEl(null);
     };
 
+    const handleLogin = () => {
+        handleMenuClose();
+        auth.getLoggedIn();
+    }
     const handleLogout = () => {
         handleMenuClose();
         auth.logoutUser();
@@ -48,6 +53,7 @@ export default function AppBanner() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
+            <MenuItem onClick={handleLogin}><Link to='/login/'>Log In</Link></MenuItem>
             <MenuItem onClick={handleMenuClose}><Link to='/register/'>Create New Account</Link></MenuItem>
         </Menu>
     );
