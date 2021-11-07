@@ -71,11 +71,25 @@ function Top5Item(props) {
     }
 
     function toggleEdit() {
-        let newActive = !editActive;
-        if (newActive) {
-            store.setIsItemEditActive();
+        // let newActive = !editActive;
+        // if (newActive) {
+        //     store.setIsItemEditActive();
+        // }
+        
+        // console.log("R:"+store.isItemEditActive);
+        // setEditActive(newActive);
+        const active = (store.isItemEditActive === props.index);
+        // console.log("NEWACTIVE: "+newActive)
+        // console.log("EDITACTIVE: "+editActive)
+        // console.log(store.isItemEditActive);
+        if (active) {
+            store.setIsItemEditActive(-1);
+            setEditActive(false);
         }
-        setEditActive(newActive);
+        else{
+            store.setIsItemEditActive(props.index);
+            setEditActive(true);
+        }
     }
     
     function handleUpdateText(event) {

@@ -42,7 +42,7 @@ function GlobalStoreContextProvider(props) {
         currentList: null,
         newListCounter: 0,
         listNameActive: false,
-        itemActive: false,
+        itemActive: -1,
         listMarkedForDeletion: null
     });
     const history = useHistory();
@@ -62,7 +62,7 @@ function GlobalStoreContextProvider(props) {
                     currentList: payload.top5List,
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
-                    isItemEditActive: false,
+                    isItemEditActive: -1,
                     listMarkedForDeletion: null
                 });
             }
@@ -73,7 +73,7 @@ function GlobalStoreContextProvider(props) {
                     currentList: null,
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
-                    isItemEditActive: false,
+                    isItemEditActive: -1,
                     listMarkedForDeletion: null
                 })
             }
@@ -84,7 +84,7 @@ function GlobalStoreContextProvider(props) {
                     currentList: payload,
                     newListCounter: store.newListCounter + 1,
                     isListNameEditActive: false,
-                    isItemEditActive: false,
+                    isItemEditActive: -1,
                     listMarkedForDeletion: null
                 })
             }
@@ -95,7 +95,7 @@ function GlobalStoreContextProvider(props) {
                     currentList: null,
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
-                    isItemEditActive: false,
+                    isItemEditActive: -1,
                     listMarkedForDeletion: null
                 });
             }
@@ -106,7 +106,7 @@ function GlobalStoreContextProvider(props) {
                     currentList: null,
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
-                    isItemEditActive: false,
+                    isItemEditActive: -1,
                     listMarkedForDeletion: payload
                 });
             }
@@ -117,7 +117,7 @@ function GlobalStoreContextProvider(props) {
                     currentList: null,
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
-                    isItemEditActive: false,
+                    isItemEditActive: -1,
                     listMarkedForDeletion: null
                 });
             }
@@ -128,7 +128,7 @@ function GlobalStoreContextProvider(props) {
                     currentList: payload,
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
-                    isItemEditActive: false,
+                    isItemEditActive: -1,
                     listMarkedForDeletion: null
                 });
             }
@@ -139,7 +139,7 @@ function GlobalStoreContextProvider(props) {
                     currentList: store.currentList,
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
-                    isItemEditActive: true,
+                    isItemEditActive: payload.index,
                     listMarkedForDeletion: null
                 });
             }
@@ -150,7 +150,7 @@ function GlobalStoreContextProvider(props) {
                     currentList: payload,
                     newListCounter: store.newListCounter,
                     isListNameEditActive: true,
-                    isItemEditActive: false,
+                    isItemEditActive: -1,
                     listMarkedForDeletion: null
                 });
             }
@@ -372,10 +372,12 @@ function GlobalStoreContextProvider(props) {
     }
 
     // THIS FUNCTION ENABLES THE PROCESS OF EDITING AN ITEM
-    store.setIsItemEditActive = function () {
+    store.setIsItemEditActive = function (index) {
         storeReducer({
             type: GlobalStoreActionType.SET_ITEM_EDIT_ACTIVE,
-            payload: null
+            payload: {
+                index: index
+            }
         });
     }
 
