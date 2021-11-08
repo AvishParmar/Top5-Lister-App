@@ -19,7 +19,7 @@ function ListCard(props) {
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
     const { idNamePair } = props;
-
+    const [deleteActive, setDeleteActive] = useState(false);
     function handleLoadList(event, id) {
         if (!event.target.disabled) {
             // CHANGE THE CURRENT LIST
@@ -42,8 +42,8 @@ function ListCard(props) {
 
     async function handleDeleteList(event, id) {
         event.stopPropagation();
-        store.markListForDeletion(id);
-        store.showDeleteListModal();
+        store.showDeleteListModal(id);
+        
     }
 
     function handleKeyPress(event) {
@@ -58,6 +58,7 @@ function ListCard(props) {
     }
 
     let cardElement =
+        
         <ListItem
             id={idNamePair._id}
             key={idNamePair._id}

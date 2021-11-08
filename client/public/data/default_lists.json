@@ -14,7 +14,8 @@
                 "Katamari Damacy",
                 "Civilization II",
                 "Super Mario World"
-            ]
+            ],
+            "ownerEmail": "avishparmar53@gmail.com"
         },
         {
             "key": "1",
@@ -30,7 +31,8 @@
                 "Lord of the Rings",
                 "Airplane!",
                 "Lawrence of Arabia"
-            ]
+            ],
+            "ownerEmail": "avishparmar53@gmail.com"
         },
         {
             "key": "2",
@@ -46,7 +48,8 @@
                 "Pigs (Three Different Ones)",
                 "Echoes (Live at Pompeii)",
                 "Time"
-            ]
+            ],
+            "ownerEmail": "avishparmar53@gmail.com"
         }
     ]
 }

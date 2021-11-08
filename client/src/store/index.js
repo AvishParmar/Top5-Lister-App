@@ -5,7 +5,6 @@ import api from '../api'
 import MoveItem_Transaction from '../transactions/MoveItem_Transaction'
 import UpdateItem_Transaction from '../transactions/UpdateItem_Transaction'
 import AuthContext from '../auth'
-import DeleteModal from '../components/DeleteModal'
 /*
     This is our global data store. Note that it uses the Flux design pattern,
     which makes use of things like actions and reducers. 
@@ -175,7 +174,7 @@ function GlobalStoreContextProvider(props) {
                     async function getListPairs(top5List) {
                         response = await api.getTop5ListPairs();
                         if (response.data.success) {
-                            let pairsArray = response.data.idNamePairs;
+                            let pairsArray = response.data.idNamePairs.filter(idNamePair => idNamePair.ownerEmail === auth.user.email);
                             storeReducer({
                                 type: GlobalStoreActionType.CHANGE_LIST_NAME,
                                 payload: {
@@ -233,7 +232,7 @@ function GlobalStoreContextProvider(props) {
     store.loadIdNamePairs = async function () {
         const response = await api.getTop5ListPairs();
         if (response.data.success) {
-            let pairsArray = response.data.idNamePairs;
+            let pairsArray = response.data.idNamePairs.filter(idNamePair => idNamePair.ownerEmail === auth.user.email);
             storeReducer({
                 type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                 payload: pairsArray
@@ -264,6 +263,7 @@ function GlobalStoreContextProvider(props) {
         let response = await api.deleteTop5ListById(listToDelete._id);
         if (response.data.success) {
             store.loadIdNamePairs();
+            store.unmarkListForDeletion();
             history.push("/");
         }
     }
@@ -381,13 +381,12 @@ function GlobalStoreContextProvider(props) {
         });
     }
 
-    store.showDeleteListModal = function () {
-        return (<DeleteModal/>);
+    store.showDeleteListModal = function (id) {
+        store.markListForDeletion(id);
     }
 
     store.hideDeleteListModal = function () {
-        let modal = document.getElementById("delete-modal");
-        modal.classList.remove("is-visible");
+        store.unmarkListForDeletion();
     }
 
     return (

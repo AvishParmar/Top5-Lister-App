@@ -8,7 +8,8 @@
                 "Katamari Damacy",
                 "Civilization II",
                 "Super Mario World"
-            ]
+            ],
+            "ownerEmail": "avishparmar53@gmail.com"
         },
         {
             "name": "Movies",
@@ -18,7 +19,8 @@
                 "Lord of the Rings",
                 "Airplane!",
                 "Lawrence of Arabia"
-            ]
+            ],
+            "ownerEmail": "avishparmar53@gmail.com"
         },
         {
             "name": "Pink Floyd Songs",
@@ -28,7 +30,8 @@
                 "Pigs (Three Different Ones)",
                 "Echoes (Live at Pompeii)",
                 "Time"
-            ]
+            ],
+            "ownerEmail": "avishparmar53@gmail.com"
         }
     ]
 }
