@@ -29,7 +29,7 @@ export default function AppBanner() {
 
     const handleLogin = () => {
         handleMenuClose();
-        auth.getLoggedIn();
+        // auth.getLoggedIn();
     }
     const handleLogout = () => {
         handleMenuClose();

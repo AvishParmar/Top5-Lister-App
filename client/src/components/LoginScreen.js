@@ -12,12 +12,24 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import AuthContext from '../auth'
 import { GlobalStoreContext } from '../store'
+import Modal from '@mui/material/Modal';
+import Alert from '@mui/material/Alert';
 // import RegisterScreen from './RegisterScreen';
 
-
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'rgb(253, 237, 237)',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 function Copyright(props) {
   return (
@@ -38,22 +50,48 @@ export default function LoginScreen() {
 
   const { auth } = useContext(AuthContext);
   const { store } = useContext(GlobalStoreContext);
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const handleSubmit = (event) => {
+   
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     
+    if (auth.error) {
+      console.log(auth.errorMessage);
+      handleOpen();
+    }
     // eslint-disable-next-line no-console
     auth.loginUser({
       email: data.get('email'),
       password: data.get('password'),
     }, store);
+    
+    
   };
+
+  
 
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
+        <Modal
+          open={open}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Alert severity="warning" sx={style}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Error: Invalid Login
+            </Typography>
+            <Typography severity="error">{auth.errorMessage}</Typography>
+            <Button onClick={handleClose}>Close</Button>
+          </Alert>
+        </Modal>
         <Grid
           item
           xs={false}

@@ -10,13 +10,15 @@ export const AuthActionType = {
     GET_LOGGED_IN: "GET_LOGGED_IN",
     LOGIN_USER: "LOGIN_USER",
     REGISTER_USER: "REGISTER_USER",
-    LOGOUT_USER: "LOGOUT_USER"
+    LOGOUT_USER: "LOGOUT_USER",
+    ACCOUNT_ERROR: "ACCOUNT_ERROR"
 }
 
 function AuthContextProvider(props) {
     const [auth, setAuth] = useState({
         user: null,
-        loggedIn: false
+        loggedIn: false,
+        error: false
     });
     const history = useHistory();
 
@@ -30,25 +32,41 @@ function AuthContextProvider(props) {
             case AuthActionType.GET_LOGGED_IN: {
                 return setAuth({
                     user: payload.user,
-                    loggedIn: payload.loggedIn
+                    loggedIn: payload.loggedIn,
+                    error: false,
+                    errorMessage: ""
                 });
             }
             case AuthActionType.REGISTER_USER: {
                 return setAuth({
                     user: payload.user,
-                    loggedIn: true
+                    loggedIn: true,
+                    error: false,
+                    errorMessage: ""
                 })
             }
             case AuthActionType.LOGIN_USER: {
                 return setAuth({
                     user: payload.user,
-                    loggedIn: true
+                    loggedIn: true,
+                    error: false,
+                    errorMessage: ""
                 })
             }
             case AuthActionType.LOGOUT_USER: {
                 return setAuth({
                     user: null,
-                    loggedIn: false
+                    loggedIn: false,
+                    error: false,
+                    errorMessage: ""
+                })
+            }
+            case AuthActionType.ACCOUNT_ERROR: {
+                return setAuth({
+                    user: null,
+                    loggedIn: false,
+                    error: true,
+                    errorMessage: payload
                 })
             }
             default:
@@ -57,44 +75,70 @@ function AuthContextProvider(props) {
     }
 
     auth.getLoggedIn = async function (userData, store) {
-        const response = await api.getLoggedIn(userData);
-        if (response.status === 200) {
-            authReducer({
-                type: AuthActionType.GET_LOGGED_IN,
-                payload: {
-                    loggedIn: response.data.loggedIn,
-                    user: response.data.user
-                }
-            });
+        try{
+            const response = await api.getLoggedIn(userData);
+            if (response.status === 200) {
+                authReducer({
+                    type: AuthActionType.GET_LOGGED_IN,
+                    payload: {
+                        loggedIn: response.data.loggedIn,
+                        user: response.data.user,
+                        error: false 
+                    }   
+                });
+            }
         }
+        catch(err){
+            authReducer({
+                type: AuthActionType.ACCOUNT_ERROR,
+                payload: err.response.data.errorMessage
+            })
+        }
+        
     }
 
     auth.registerUser = async function(userData, store) {
-        const response = await api.registerUser(userData);      
-        if (response.status === 200) {
+        try{
+            const response = await api.registerUser(userData);      
+            if (response.status === 200) {
+                authReducer({
+                    type: AuthActionType.REGISTER_USER,
+                    payload: {
+                        user: response.data.user
+                    }
+                })
+                history.push("/");
+                store.loadIdNamePairs();
+            }
+        }
+        catch(err){
+            console.log(err.response.data.errorMessage);
             authReducer({
-                type: AuthActionType.REGISTER_USER,
-                payload: {
-                    user: response.data.user
-                }
+                type: AuthActionType.ACCOUNT_ERROR,
+                payload: err.response.data.errorMessage
             })
-            history.push("/");
-            store.loadIdNamePairs();
         }
     }
 
     auth.loginUser = async function(userData, store) {
-        const response = await api.loginUser(userData);
-        console.log(response.status);
-        if (response.status === 200) {
+        try{
+            const response = await api.loginUser(userData);
+            console.log(response.status);
+            if (response.status === 200) {
+                authReducer({
+                    type: AuthActionType.LOGIN_USER,
+                    payload: {
+                        user: response.data.user
+                    }
+                })
+                history.push("/");
+                store.loadIdNamePairs();
+            }
+        }catch(err){
             authReducer({
-                type: AuthActionType.LOGIN_USER,
-                payload: {
-                    user: response.data.user
-                }
+                type: AuthActionType.ACCOUNT_ERROR,
+                payload: err.response.data.errorMessage
             })
-            history.push("/");
-            store.loadIdNamePairs();
         }
     }
 

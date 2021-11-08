@@ -45,7 +45,7 @@ function GlobalStoreContextProvider(props) {
         listMarkedForDeletion: null
     });
     const history = useHistory();
-
+    
     // SINCE WE'VE WRAPPED THE STORE IN THE AUTH CONTEXT WE CAN ACCESS THE USER HERE
     const { auth } = useContext(AuthContext);
 
@@ -382,7 +382,8 @@ function GlobalStoreContextProvider(props) {
     }
 
     store.showDeleteListModal = function (id) {
-        store.markListForDeletion(id);
+        let modal = store.listMarkedForDeletion;
+        console.log(modal)
     }
 
     store.hideDeleteListModal = function () {
@@ -393,6 +394,7 @@ function GlobalStoreContextProvider(props) {
         <GlobalStoreContext.Provider value={{
             store
         }}>
+        
             {props.children}
         </GlobalStoreContext.Provider>
     );

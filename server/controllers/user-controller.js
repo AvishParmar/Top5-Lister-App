@@ -59,7 +59,7 @@ loginUser = async (req, res) => {
         }).send();
     }
     catch(err){
-        console.log(err);
+        console.error(err);
         res.status(500).send()
     }
 }
@@ -71,33 +71,6 @@ logoutUser = async (req, res) => {
     res
         .status(200)
         .json({ success: true, message: 'User logged out successfully' })
-    // const { email, password } = req.body;
-    // console.log(email)
-    // const user = await User.findOne({ email: email });
-    // res.cookie('token', 'none', {
-    //     expires: new Date(Date.now()),
-    //     httpOnly: true,
-    // })
-    
-    // return res.status(200).json({
-    //     success: true,
-    //     user: user
-    // }).send();
-    // try{
-    //     const { email, password } = req.body;
-    //     const user = await User.findOne({ email: email });
-    //     return res.status(200).json({
-    //         loggedIn: false,
-    //         user: {
-    //             email: user.email,
-    //             password: user.password
-    //         }
-    //     }).send();
-    // }
-    // catch (err) {
-    //     console.log(err);
-    //     res.status(500).send();
-    // }
 }
 registerUser = async (req, res) => {
     try {
@@ -143,7 +116,7 @@ registerUser = async (req, res) => {
 
         // LOGIN THE USER
         const token = auth.signToken(savedUser);
-
+        
         await res.cookie("token", token, {
             httpOnly: true,
             secure: true,
